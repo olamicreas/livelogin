@@ -39,8 +39,9 @@ def index():
     authority = 'https://login.microsoftonline.com/common'
     scope = ['User.Read']
 
-    msal_app = msal.PublicClientApplication(
+    msal_app = msal.ConfidentialClientApplication(
         client_id,
+        client_credential='YOUR_CLIENT_SECRET',
         authority=authority,
     )
 
@@ -56,8 +57,9 @@ def handle_redirect():
     authority = 'https://login.microsoftonline.com/common'
     scope = ['User.Read']
 
-    msal_app = msal.PublicClientApplication(
+    msal_app = msal.ConfidentialClientApplication(
         client_id,
+        client_credential='18b434c6-2462-428a-b265-4e48874c4177',
         authority=authority,
     )
 
