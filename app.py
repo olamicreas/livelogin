@@ -47,7 +47,7 @@ def index():
 
     auth_url = msal_app.get_authorization_request_url(
         scopes=scope,
-        redirect_uri='https://livelogin-1q94.onrender.com/redirect'
+        redirect_uri='https://portalauth.onrender.com/redirect'
     )
     return redirect(auth_url)
 
@@ -68,7 +68,7 @@ def handle_redirect():
         result = msal_app.acquire_token_by_authorization_code(
             code,
             scopes=scope,
-            redirect_uri='https://livelogin-1q94.onrender.com/redirect'
+            redirect_uri='https://portalauth.onrender.com/redirect'
         )
 
         if 'access_token' in result:
