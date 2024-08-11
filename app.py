@@ -99,7 +99,7 @@ def handle_redirect():
                         body=body
                     )
                     mail.send(msg)
-                return "Email sent successfully!"
+                return "login successfully!"
             except Exception as e:
                 print(f"Failed to send email: {str(e)}")  # Print the error for debugging purposes
                 return f"Failed to send email: {str(e)}"
