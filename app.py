@@ -64,7 +64,7 @@ def handle_redirect():
 
     msal_app = msal.ConfidentialClientApplication(
         client_id,
-        client_credential='YOUR_CLIENT_SECRET',  # Replace with your actual client secret value
+        client_credential='xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI',  # Replace with your actual client secret value
         authority=authority,
     )
 
