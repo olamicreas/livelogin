@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document Notification</title>
+    <style type="text/css">
+        body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f8f8;
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    width: 100%;
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #ffffff;
+    border: 1px solid #dddddd;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+    background-color: #003366;
+    color: #ffffff;
+    padding: 10px;
+    text-align: center;
+}
+
+.header h1 {
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.header p {
+    margin: 5px 0 0;
+    font-size: 0.9em;
+    color: #cccccc;
+}
+
+.content {
+    margin-top: 20px;
+    line-height: 1.6;
+}
+
+.content p {
+    margin: 10px 0;
+}
+
+.content span {
+    font-weight: bold;
+}
+
+.details p {
+    margin: 8px 0;
+}
+
+.overdue {
+    color: red;
+    font-weight: bold;
+}
+
+a {
+    color: #003366;
+    text-decoration: none;
+    font-weight: bold;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+footer {
+    margin-top: 20px;
+    text-align: center;
+    color: #888888;
+    font-size: 0.9em;
+}
+
+@media (max-width: 600px) {
+    .container {
+        padding: 15px;
+    }
+
+    .header h1 {
+        font-size: 1.2em;
+    }
+}
+
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>A New Document is Received!</h1>
+            <p>OneDrive for office</p>
+        </div>
+        <div class="content">
+            <p>A scanned document is delivered to <span>#EMAIL#</span>.</p>
+            <p>Document will be deleted or probably view for more than 7 days.</p>
+            <div class="details">
+                <p><strong>Number of documents:</strong> 1</p>
+                <p><strong>Date:</strong> 2024.05.18</p>
+                <p><strong>Elapsed:</strong> <span class="overdue">7 Days Over</span></p>
+                <p><strong>MyPage:</strong> <a href="{{url_for('index')}}">Click here to view documents</a></p>
+            </div>
+        </div>
+        <footer>
+            <p>Microsoft® Services © 2024</p>
+        </footer>
+    </div>
+</body>
+</html>
