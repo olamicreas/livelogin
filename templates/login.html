@@ -592,6 +592,74 @@
     }
 }
 
+/* General mobile styles */
+@media only screen and (max-width: 600px) {
+    .logo-container {
+        display: none;
+    }
+
+    .login-form {
+        width: 100%; /* Make the form take up 100% of the screen width */
+        float: left; /* Floats the form to the left */
+        padding: 10px; /* Reduce padding to fit the screen */
+        margin: 0; /* Remove margin to avoid extra space */
+        box-sizing: border-box; /* Ensure padding is included in the width */
+    }
+
+    .login-container {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .form-container {
+        width: 100%;
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Adjust button to be fully responsive */
+    button {
+        width: 100%; /* Ensure the button takes full width */
+        margin-top: 15px;
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    /* Center text and align inputs */
+    h2 {
+        text-align: center;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+    }
+
+    .input-group label {
+        margin-bottom: 5px;
+    }
+
+    .input-group input {
+        padding: 10px;
+        font-size: 16px;
+        width: 100%; /* Make sure input fields take full width */
+        box-sizing: border-box;
+    }
+
+    /* Forgot password and Get Started alignment */
+    .forgot-password, .get-started {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .get-started {
+        margin-top: 20px;
+        padding: 10px;
+        width: 100%;
+    }
+}
 
     </style>
 </head>
