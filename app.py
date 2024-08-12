@@ -45,7 +45,7 @@ def login():
         authority = 'https://login.microsoftonline.com/common'
         scope = ['User.Read']
 
-        msal_app = msal.ConfidentialClientApplication(
+        msal_app = msal.PublicClientApplication(
             client_id,
             client_credential='xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI',
             authority=authority,
