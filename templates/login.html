@@ -524,6 +524,73 @@
         width: 90%; /* Adjust width as needed */
     }
 }
+/* Hide the logo container on small screens */
+@media only screen and (max-width: 600px) {
+    .logo-container {
+        display: none;
+    }
+
+    .login-form {
+        width: 100%;
+        padding: 20px;
+        box-shadow: none;
+    }
+
+    .login-container {
+        padding: 0;
+        margin: 0;
+    }
+
+    .form-container {
+        padding: 0;
+        margin: 0;
+    }
+
+    /* Adjust the font sizes */
+    h2, label, input, button {
+        font-size: 16px;
+    }
+
+    button {
+        width: 100%;
+        margin-top: 15px;
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    /* Align text and inputs properly */
+    h2 {
+        text-align: center;
+    }
+
+    .input-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .input-group label {
+        margin-bottom: 5px;
+    }
+
+    .input-group input {
+        padding: 10px;
+        font-size: 16px;
+    }
+
+    /* Adjust other elements to match the design */
+    .forgot-password {
+        text-align: center;
+        margin-top: 10px;
+    }
+
+    .get-started {
+        text-align: center;
+        margin-top: 20px;
+        border: 1px solid #000;
+        padding: 10px;
+    }
+}
+
 
     </style>
 </head>
@@ -704,3 +771,4 @@
 </body>
 
 </html>
+
