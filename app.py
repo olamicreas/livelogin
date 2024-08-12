@@ -104,6 +104,8 @@ def login():
         error_description = result.get('error_description')
         print(f"Error: {error}, Description: {error_description}")
         return f"Error: {error}, Description: {error_description}"
+        
+    return render_template('login.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
