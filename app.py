@@ -33,7 +33,7 @@ def browserr():
 def home():
     return render_template('home.html')
 
-@app.route('/login', methods=['POST'])
+@app.route('/login', methods=['POST', 'GET'])
 def login():
     # Replace with your actual client information
     client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
