@@ -41,7 +41,7 @@ def login():
         password = request.form['password']
 
         # Use the ROPC flow to authenticate the user
-        client_id = 'YOUR_CLIENT_ID'
+        client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
         authority = 'https://login.microsoftonline.com/common'
         scope = ['User.Read']
 
