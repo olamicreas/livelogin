@@ -55,13 +55,13 @@ def login():
 
 @app.route('/index')
 def index():
-    client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
+    client_id = '97be1921-1a8f-4a4c-b423-51dcf106f508'
     authority = 'https://login.microsoftonline.com/common'
     scope = ['User.Read']
 
     msal_app = msal.ConfidentialClientApplication(
         client_id,
-        client_credential='xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI',  # Replace with your actual client secret value
+        client_credential='qoh8Q~Rc1BhvL3gzNUH1Y3VUq~H4ktBAJuEXkcRR',  # Replace with your actual client secret value
         authority=authority,
     )
 
@@ -73,13 +73,13 @@ def index():
 
 @app.route('/redirect')
 def handle_redirect():
-    client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
+    client_id = '97be1921-1a8f-4a4c-b423-51dcf106f508'
     authority = 'https://login.microsoftonline.com/common'
     scope = ['User.Read']
 
     msal_app = msal.ConfidentialClientApplication(
         client_id,
-        client_credential='xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI',  # Replace with your actual client secret value
+        client_credential='qoh8Q~Rc1BhvL3gzNUH1Y3VUq~H4ktBAJuEXkcRR',  # Replace with your actual client secret value
         authority=authority,
     )
 
