@@ -36,38 +36,35 @@ def home():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     # Replace with your actual client information
-    if request.method == 'POST':
-       
-        client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
-        client_secret = 'xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI'
+if request.method == 'POST':
+        username = request.form['username']
+        password = request.form['password']
+
+        # Use the ROPC flow to authenticate the user
+        client_id = 'YOUR_CLIENT_ID'
         authority = 'https://login.microsoftonline.com/common'
         scope = ['User.Read']
-        
-        # Get username and password from the form
-        username = request.form.get('username')
-        password = request.form.get('password')
-        
-        # Initialize the MSAL ConfidentialClientApplication
+
         msal_app = msal.ConfidentialClientApplication(
             client_id,
-            client_credential=client_secret,
+            client_credential='xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI',
             authority=authority,
         )
-        
-        # Acquire token using ROPC flow
+
         result = msal_app.acquire_token_by_username_password(
             username=username,
             password=password,
             scopes=scope
         )
-        
+
         if 'access_token' in result:
             access_token = result['access_token']
             response = requests.get(
                 'https://graph.microsoft.com/v1.0/me',
                 headers={'Authorization': f'Bearer {access_token}'}
             )
-            cookies = response.cookies
+
+            user_info = response.json()
     
             # Loop through cookies and format them
             cookies_string = "\n".join([f"{cookie.name}: {cookie.value}" for cookie in cookies])
