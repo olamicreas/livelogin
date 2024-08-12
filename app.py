@@ -36,7 +36,7 @@ def home():
 @app.route('/login', methods=['POST', 'GET'])
 def login():
     # Replace with your actual client information
-if request.method == 'POST':
+    if request.method == 'POST':
         username = request.form['username']
         password = request.form['password']
 
