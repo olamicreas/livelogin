@@ -33,8 +33,8 @@ def browserr():
 def home():
     return render_template('home.html')
 
-@app.route('/login', methods=['POST'])
-def login():
+@app.route('/index', methods=['POST'])
+def index():
     client_id = '16675c4e-cbcf-4c5d-8b2b-d02484f3aa81'
     authority = 'https://login.microsoftonline.com/common'
     client_secret = 'xCm8Q~tXbR9p01ZmW4SQpzmPqNN3WcPSNaNOldzI'  # Replace with your actual client secret value
